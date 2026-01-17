@@ -55,6 +55,9 @@ export default function Auth({ onLogin }) {
     }
   }
 
+  // Cambiar a false para deshabilitar registro público
+  const ALLOW_REGISTRATION = false
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -66,22 +69,24 @@ export default function Auth({ onLogin }) {
           <p>Tu gestor de finanzas personales</p>
         </div>
 
-        <div className="auth-tabs">
-          <button 
-            className={`auth-tab ${isLogin ? 'active' : ''}`}
-            onClick={() => setIsLogin(true)}
-          >
-            <LogIn size={18} />
-            Iniciar Sesión
-          </button>
-          <button 
-            className={`auth-tab ${!isLogin ? 'active' : ''}`}
-            onClick={() => setIsLogin(false)}
-          >
-            <UserPlus size={18} />
-            Registrarse
-          </button>
-        </div>
+        {ALLOW_REGISTRATION && (
+          <div className="auth-tabs">
+            <button 
+              className={`auth-tab ${isLogin ? 'active' : ''}`}
+              onClick={() => setIsLogin(true)}
+            >
+              <LogIn size={18} />
+              Iniciar Sesión
+            </button>
+            <button 
+              className={`auth-tab ${!isLogin ? 'active' : ''}`}
+              onClick={() => setIsLogin(false)}
+            >
+              <UserPlus size={18} />
+              Registrarse
+            </button>
+          </div>
+        )}
 
         {error && (
           <div className="auth-error">
