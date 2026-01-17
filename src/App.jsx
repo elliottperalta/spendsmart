@@ -1265,7 +1265,7 @@ function App() {
               {currentView === 'reports' && 'Genera y descarga reportes de tu actividad'}
             </p>
           </div>
-          <div className="header-actions">
+          <div className="header-actions desktop-only">
             <button className="btn btn-secondary" onClick={exportToCSV}>
               <Download size={18} />
               <span className="btn-text">Exportar</span>
