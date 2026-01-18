@@ -221,6 +221,15 @@ const MobileExpenseInput = ({
             <div className={`mobile-amount-display ${type === 'ingreso' ? 'income' : ''}`}>
               <span className="mobile-currency">B/.</span>
               <span className="mobile-amount-value">{displayAmount}</span>
+              {/* Backspace button next to amount */}
+              {amount && (
+                <button 
+                  className="mobile-amount-backspace"
+                  onClick={() => handleNumpadPress('backspace')}
+                >
+                  ⌫
+                </button>
+              )}
             </div>
             
             {/* Recurrence indicator */}
@@ -403,11 +412,10 @@ const MobileExpenseInput = ({
           </div>
           <div className="mobile-numpad-row">
             <button 
-              className="mobile-numpad-btn backspace" 
-              onClick={() => handleNumpadPress('backspace')}
-              disabled={!amount}
+              className="mobile-numpad-btn" 
+              onClick={() => handleNumpadPress('.')}
             >
-              ⌫
+              .
             </button>
             <button className="mobile-numpad-btn" onClick={() => handleNumpadPress('0')}>0</button>
             <button 

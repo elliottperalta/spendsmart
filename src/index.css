@@ -24,14 +24,14 @@
   --gray-900: #111827;
 }
 
-/* Dark Theme */
+/* Dark Theme - Pure Black */
 [data-theme="dark"] {
-  --bg-primary: #0f0f1a;
-  --bg-secondary: #1a1a2e;
-  --bg-tertiary: #252542;
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #1a1a1a;
   --text-primary: #ffffff;
-  --text-secondary: #a0a0b0;
-  --border-color: #2a2a40;
+  --text-secondary: #888888;
+  --border-color: #2a2a2a;
 }
 
 [data-theme="light"] {
@@ -1804,6 +1804,7 @@ body {
   display: flex;
   align-items: baseline;
   gap: 0.25rem;
+  position: relative;
 }
 
 .mobile-currency {
@@ -1822,6 +1823,24 @@ body {
 
 .mobile-amount-display.income .mobile-amount-value {
   color: #22c55e;
+}
+
+/* Backspace button next to amount */
+.mobile-amount-backspace {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.mobile-amount-backspace:hover,
+.mobile-amount-backspace:active {
+  opacity: 1;
 }
 
 .mobile-note-input {
@@ -2133,15 +2152,6 @@ body {
 .mobile-numpad-btn.submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.mobile-numpad-btn.backspace {
-  font-size: 1.5rem;
-  color: var(--text-secondary);
-}
-
-.mobile-numpad-btn.backspace:disabled {
-  opacity: 0.3;
 }
 
 /* Recurrence Button */
