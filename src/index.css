@@ -1734,16 +1734,20 @@ body {
   /* No flex, just normal block flow */
 }
 
-/* Numpad fixed at bottom */
+/* Numpad fixed at bottom - takes more space */
 .mobile-numpad {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 0.5rem;
+  top: 45%; /* Starts from middle of screen */
+  padding: 0.75rem;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* Category menu floats above everything */
@@ -2143,11 +2147,7 @@ body {
 .mobile-numpad-row {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.mobile-numpad-row:last-child {
-  margin-bottom: 0;
+  flex: 1;
 }
 
 .mobile-numpad-btn {
@@ -2158,13 +2158,11 @@ body {
   background: var(--bg-tertiary);
   border: none;
   border-radius: 12px;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 500;
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.15s;
-  min-height: 56px;
-  padding: 0.75rem;
 }
 
 .mobile-numpad-btn:hover {
