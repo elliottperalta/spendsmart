@@ -1724,19 +1724,14 @@ body {
 }
 
 .mobile-expense-container {
-  display: flex;
-  flex-direction: column;
   height: 100%;
   height: 100dvh;
   overflow: hidden;
 }
 
-/* Content area - does not expand */
+/* Content area */
 .mobile-scrollable-content {
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 260px; /* Space for fixed numpad */
+  /* No flex, just normal block flow */
 }
 
 /* Numpad fixed at bottom */
@@ -1749,6 +1744,15 @@ body {
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
   z-index: 10;
+}
+
+/* Category menu floats above everything */
+.mobile-category-menu {
+  z-index: 200;
+}
+
+.mobile-menu-backdrop {
+  z-index: 199;
 }
 
 /* Header */
@@ -1831,8 +1835,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  position: relative;
+  padding: 0.5rem 1rem;
 }
 
 .mobile-amount-area {
