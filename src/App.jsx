@@ -151,6 +151,9 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterCategory, setFilterCategory] = useState('all')
   const [filterType, setFilterType] = useState('all')
+  const [filterDate, setFilterDate] = useState('all') // all, today, yesterday, week, month, custom
+  const [customDateFrom, setCustomDateFrom] = useState('')
+  const [customDateTo, setCustomDateTo] = useState('')
   
   // Form states
   const [formData, setFormData] = useState({
@@ -441,7 +444,45 @@ function App() {
     const matchesSearch = exp.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = filterCategory === 'all' || exp.categoryId === Number(filterCategory)
     const matchesType = filterType === 'all' || exp.type === filterType
-    return matchesSearch && matchesCategory && matchesType
+    
+    // Date filter
+    let matchesDate = true
+    const expDate = new Date(exp.date)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    
+    if (filterDate === 'today') {
+      const expDateOnly = new Date(exp.date)
+      expDateOnly.setHours(0, 0, 0, 0)
+      matchesDate = expDateOnly.getTime() === today.getTime()
+    } else if (filterDate === 'yesterday') {
+      const yesterday = new Date(today)
+      yesterday.setDate(yesterday.getDate() - 1)
+      const expDateOnly = new Date(exp.date)
+      expDateOnly.setHours(0, 0, 0, 0)
+      matchesDate = expDateOnly.getTime() === yesterday.getTime()
+    } else if (filterDate === 'week') {
+      const weekAgo = new Date(today)
+      weekAgo.setDate(weekAgo.getDate() - 7)
+      matchesDate = expDate >= weekAgo
+    } else if (filterDate === 'month') {
+      const monthAgo = new Date(today)
+      monthAgo.setMonth(monthAgo.getMonth() - 1)
+      matchesDate = expDate >= monthAgo
+    } else if (filterDate === 'custom') {
+      if (customDateFrom) {
+        const fromDate = new Date(customDateFrom)
+        fromDate.setHours(0, 0, 0, 0)
+        matchesDate = expDate >= fromDate
+      }
+      if (customDateTo && matchesDate) {
+        const toDate = new Date(customDateTo)
+        toDate.setHours(23, 59, 59, 999)
+        matchesDate = expDate <= toDate
+      }
+    }
+    
+    return matchesSearch && matchesCategory && matchesType && matchesDate
   }).sort((a, b) => new Date(b.date) - new Date(a.date))
 
   // Obtener todas las categorías (gastos + ingresos)
@@ -1575,7 +1616,65 @@ function App() {
                     ))}
                   </optgroup>
                 </select>
+
+                {/* Date Filter */}
+                <select 
+                  className="form-select"
+                  value={filterDate}
+                  onChange={e => {
+                    setFilterDate(e.target.value)
+                    if (e.target.value !== 'custom') {
+                      setCustomDateFrom('')
+                      setCustomDateTo('')
+                    }
+                  }}
+                  style={{ minWidth: '140px' }}
+                >
+                  <option value="all">📅 Todas las fechas</option>
+                  <option value="today">Hoy</option>
+                  <option value="yesterday">Ayer</option>
+                  <option value="week">Última semana</option>
+                  <option value="month">Último mes</option>
+                  <option value="custom">Personalizado...</option>
+                </select>
               </div>
+
+              {/* Custom Date Range */}
+              {filterDate === 'custom' && (
+                <div className="filter-bar" style={{ paddingTop: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Desde:</span>
+                    <input
+                      type="date"
+                      className="form-input"
+                      value={customDateFrom}
+                      onChange={e => setCustomDateFrom(e.target.value)}
+                      style={{ width: 'auto' }}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Hasta:</span>
+                    <input
+                      type="date"
+                      className="form-input"
+                      value={customDateTo}
+                      onChange={e => setCustomDateTo(e.target.value)}
+                      style={{ width: 'auto' }}
+                    />
+                  </div>
+                  {(customDateFrom || customDateTo) && (
+                    <button 
+                      className="btn btn-ghost btn-sm"
+                      onClick={() => {
+                        setCustomDateFrom('')
+                        setCustomDateTo('')
+                      }}
+                    >
+                      Limpiar
+                    </button>
+                  )}
+                </div>
+              )}
 
               <div className="transactions-list" style={{ maxHeight: 'none' }}>
                 {filteredExpenses.length > 0 ? (

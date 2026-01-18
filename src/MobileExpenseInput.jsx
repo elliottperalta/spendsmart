@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { X, Calendar, Pencil, Check, AlignLeft, ChevronDown, ChevronUp, Repeat } from 'lucide-react'
+import { X, Calendar, Check, AlignLeft, ChevronDown, ChevronUp, Repeat, Grid3X3 } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
@@ -30,7 +30,7 @@ const MobileExpenseInput = ({
   const [type, setType] = useState(initialType)
   const [showNote, setShowNote] = useState(false)
   const [showDatePicker, setShowDatePicker] = useState(false)
-  const [showAllCategories, setShowAllCategories] = useState(false)
+  const [showCategoryMenu, setShowCategoryMenu] = useState(false)
   
   // Recurrence states
   const [showRecurrenceMenu, setShowRecurrenceMenu] = useState(false)
@@ -58,7 +58,7 @@ const MobileExpenseInput = ({
         setType(initialType)
         setShowNote(false)
       }
-      setShowAllCategories(false)
+      setShowCategoryMenu(false)
       setShowDatePicker(false)
       setShowRecurrenceMenu(false)
       setSelectedRecurrence('none')
@@ -199,7 +199,9 @@ const MobileExpenseInput = ({
         </div>
 
         {/* Scrollable Content Area */}
-        <div className="mobile-scrollable-content">        {/* Recurrence Dropdown Menu */}
+        <div className="mobile-scrollable-content">
+        
+        {/* Recurrence Dropdown Menu */}
         {showRecurrenceMenu && (
           <div className="mobile-recurrence-menu">
             {RECURRENCE_OPTIONS.map(option => (
@@ -210,6 +212,25 @@ const MobileExpenseInput = ({
               >
                 <span>{option.label}</span>
                 {selectedRecurrence === option.id && <Check size={16} />}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Floating Category Menu */}
+        {showCategoryMenu && (
+          <div className="mobile-category-menu">
+            {currentCategories.map(cat => (
+              <button
+                key={cat.id}
+                className={`mobile-category-menu-item ${selectedCategory === cat.id ? 'selected' : ''}`}
+                onClick={() => {
+                  setSelectedCategory(cat.id)
+                  setShowCategoryMenu(false)
+                }}
+              >
+                <span className="mobile-category-emoji">{cat.emoji}</span>
+                <span className="mobile-category-name">{cat.name}</span>
               </button>
             ))}
           </div>
@@ -260,44 +281,9 @@ const MobileExpenseInput = ({
               </button>
             )}
           </div>
-
-          {/* Floating Categories */}
-          <div className="mobile-categories-area">
-            {currentCategories.slice(0, showAllCategories ? currentCategories.length : 5).map(cat => (
-              <button
-                key={cat.id}
-                className={`mobile-category-pill ${selectedCategory === cat.id ? 'selected' : ''}`}
-                onClick={() => {
-                  setSelectedCategory(cat.id)
-                  setShowAllCategories(false) // Auto-minimize when selecting
-                }}
-              >
-                <span className="mobile-category-emoji">{cat.emoji}</span>
-                <span className="mobile-category-name">{cat.name}</span>
-              </button>
-            ))}
-            {currentCategories.length > 5 && !showAllCategories && (
-              <button 
-                className="mobile-category-pill more"
-                onClick={() => setShowAllCategories(true)}
-              >
-                <ChevronDown size={16} />
-                <span>Más</span>
-              </button>
-            )}
-            {showAllCategories && (
-              <button 
-                className="mobile-category-pill more"
-                onClick={() => setShowAllCategories(false)}
-              >
-                <ChevronUp size={16} />
-                <span>Menos</span>
-              </button>
-            )}
-          </div>
         </div>
 
-        {/* Date Row */}
+        {/* Date Row with Category Button */}
         <div className="mobile-meta-row">
           <button 
             className="mobile-meta-btn"
@@ -308,12 +294,22 @@ const MobileExpenseInput = ({
             <span className="mobile-meta-time">{time}</span>
           </button>
           
-          {selectedCategoryData && (
-            <div className="mobile-selected-category">
-              <span>{selectedCategoryData.emoji}</span>
-              <span>{selectedCategoryData.name}</span>
-            </div>
-          )}
+          <button 
+            className={`mobile-category-btn ${selectedCategory ? 'selected' : ''}`}
+            onClick={() => setShowCategoryMenu(!showCategoryMenu)}
+          >
+            {selectedCategoryData ? (
+              <>
+                <span>{selectedCategoryData.emoji}</span>
+                <span>{selectedCategoryData.name}</span>
+              </>
+            ) : (
+              <>
+                <Grid3X3 size={16} />
+                <span>Categoría</span>
+              </>
+            )}
+          </button>
         </div>
 
         {/* Date Picker (conditional) */}
