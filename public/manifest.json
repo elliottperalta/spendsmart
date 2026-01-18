@@ -1,0 +1,18 @@
+{
+  "name": "SpendSmart",
+  "short_name": "SpendSmart",
+  "description": "Tu gestor de finanzas personales",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f1a",
+  "theme_color": "#7c3aed",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
