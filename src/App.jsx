@@ -230,7 +230,6 @@ function App() {
         if (data.goals) setGoals(data.goals)
         if (data.recurring) setRecurring(data.recurring)
         if (data.saved_reports) setSavedReports(data.saved_reports)
-        showToast('Datos sincronizados correctamente', 'success')
       } else {
         // First time user - create entry with current local data
         await saveUserData(userId)
