@@ -198,22 +198,6 @@ const MobileExpenseInput = ({
           </button>
         </div>
 
-        {/* Date and Time Inputs - Direct Edit */}
-        <div className="mobile-datetime-row">
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="mobile-datetime-input"
-          />
-          <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="mobile-datetime-input"
-          />
-        </div>
-
         {/* Scrollable Content Area */}
         <div className="mobile-scrollable-content">
         
@@ -307,14 +291,21 @@ const MobileExpenseInput = ({
 
         {/* Date Row with Category Button */}
         <div className="mobile-meta-row">
-          <button 
-            className="mobile-meta-btn"
-            onClick={() => setShowDatePicker(!showDatePicker)}
-          >
+          <div className="mobile-datetime-inputs">
             <Calendar size={16} />
-            <span>{formattedDate}</span>
-            <span className="mobile-meta-time">{time}</span>
-          </button>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="mobile-date-input-inline"
+            />
+            <input
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="mobile-time-input-inline"
+            />
+          </div>
           
           <button 
             className={`mobile-category-btn ${selectedCategory ? 'selected' : ''}`}
@@ -333,24 +324,6 @@ const MobileExpenseInput = ({
             )}
           </button>
         </div>
-
-        {/* Date Picker (conditional) */}
-        {showDatePicker && (
-          <div className="mobile-date-picker">
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="mobile-date-input"
-            />
-            <input
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              className="mobile-time-input"
-            />
-          </div>
-        )}
 
         {/* Custom Recurrence Modal */}
         {showCustomRecurrence && (

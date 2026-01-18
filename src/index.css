@@ -1811,30 +1811,6 @@ body {
   background: #22c55e;
 }
 
-/* Date Time Row - Direct edit inputs */
-.mobile-datetime-row {
-  display: flex;
-  gap: 0.75rem;
-  padding: 0 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.mobile-datetime-input {
-  flex: 1;
-  padding: 0.75rem 1rem;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  color: var(--text-primary);
-  font-size: 0.9375rem;
-  cursor: pointer;
-}
-
-.mobile-datetime-input:focus {
-  outline: none;
-  border-color: var(--primary);
-}
-
 .mobile-edit-btn {
   display: flex;
   align-items: center;
@@ -2114,6 +2090,54 @@ body {
   padding: 0.75rem 1rem;
   background: var(--bg-primary);
   z-index: 11;
+}
+
+/* Date/Time inline inputs container */
+.mobile-datetime-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-tertiary);
+  border: none;
+  border-radius: 12px;
+  color: var(--text-primary);
+}
+
+.mobile-datetime-inputs svg {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.mobile-date-input-inline,
+.mobile-time-input-inline {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.mobile-date-input-inline {
+  width: 110px;
+}
+
+.mobile-time-input-inline {
+  width: 70px;
+}
+
+.mobile-date-input-inline:focus,
+.mobile-time-input-inline:focus {
+  outline: none;
+}
+
+/* Ensure native date/time pickers work on mobile */
+.mobile-date-input-inline::-webkit-calendar-picker-indicator,
+.mobile-time-input-inline::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
 }
 
 .mobile-meta-btn {
