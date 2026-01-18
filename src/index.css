@@ -1741,6 +1741,7 @@ body {
   display: flex;
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
+  flex-shrink: 0;
 }
 
 /* Header */
@@ -2130,21 +2131,19 @@ body {
 
 /* Numpad */
 .mobile-numpad {
-  padding: 0.5rem;
+  padding: 0.75rem;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
-  flex-shrink: 0;
-  margin-top: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 .mobile-numpad-row {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.mobile-numpad-row:last-child {
-  margin-bottom: 0;
 }
 
 .mobile-numpad-btn {
@@ -2155,13 +2154,13 @@ body {
   background: var(--bg-tertiary);
   border: none;
   border-radius: 12px;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 500;
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.15s;
-  min-height: 52px;
-  padding: 0.75rem;
+  min-height: 64px;
+  padding: 1rem;
 }
 
 .mobile-numpad-btn:hover {

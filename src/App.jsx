@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { 
   Plus, Minus, Wallet, TrendingUp, Hash, DollarSign, 
   Pencil, Trash2, X, Download, Settings, FileText,
-  ChevronLeft, ChevronRight, Calendar, LayoutDashboard,
+  ChevronLeft, ChevronRight, ChevronDown, Calendar, LayoutDashboard,
   Receipt, PiggyBank, Target, Moon, Sun, Search,
   ArrowUpRight, ArrowDownRight, Filter, MoreVertical, Menu,
   Repeat, Play, Pause, FileDown, Clock, AlertCircle,
