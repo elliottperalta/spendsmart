@@ -154,6 +154,8 @@ function App() {
   const [filterDate, setFilterDate] = useState('all') // all, today, yesterday, week, month, custom
   const [customDateFrom, setCustomDateFrom] = useState('')
   const [customDateTo, setCustomDateTo] = useState('')
+  const [showTransactionSearch, setShowTransactionSearch] = useState(false)
+  const [showTransactionFilters, setShowTransactionFilters] = useState(false)
   
   // Form states
   const [formData, setFormData] = useState({
@@ -1573,74 +1575,127 @@ function App() {
           {/* Transactions View */}
           {currentView === 'transactions' && (
             <div className="card">
-              <div className="filter-bar">
-                <div className="search-input" style={{ position: 'relative', flex: 1, maxWidth: '300px' }}>
-                  <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="Buscar transacciones..."
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                    style={{ paddingLeft: '40px' }}
-                  />
-                </div>
-                
-                {/* Type Filter */}
-                <select 
-                  className="form-select"
-                  value={filterType}
-                  onChange={e => setFilterType(e.target.value)}
-                  style={{ minWidth: '120px' }}
+              {/* Toggle Icons Bar */}
+              <div className="transaction-toggle-bar">
+                <button 
+                  className={`toggle-icon-btn ${showTransactionSearch ? 'active' : ''}`}
+                  onClick={() => setShowTransactionSearch(!showTransactionSearch)}
+                  title="Buscar"
                 >
-                  <option value="all">Todos</option>
-                  <option value="gasto">🔴 Gastos</option>
-                  <option value="ingreso">🟢 Ingresos</option>
-                </select>
-
-                {/* Category Filter */}
-                <select 
-                  className="form-select"
-                  value={filterCategory}
-                  onChange={e => setFilterCategory(e.target.value)}
+                  <Search size={20} />
+                </button>
+                <span className="transaction-count">{filteredExpenses.length} transacciones</span>
+                <button 
+                  className={`toggle-icon-btn ${showTransactionFilters ? 'active' : ''}`}
+                  onClick={() => setShowTransactionFilters(!showTransactionFilters)}
+                  title="Filtros"
                 >
-                  <option value="all">Todas las categorías</option>
-                  <optgroup label="Gastos">
-                    {categories.map(cat => (
-                      <option key={cat.id} value={cat.id}>{cat.emoji} {cat.name}</option>
-                    ))}
-                  </optgroup>
-                  <optgroup label="Ingresos">
-                    {incomeCategories.map(cat => (
-                      <option key={cat.id} value={cat.id}>{cat.emoji} {cat.name}</option>
-                    ))}
-                  </optgroup>
-                </select>
-
-                {/* Date Filter */}
-                <select 
-                  className="form-select"
-                  value={filterDate}
-                  onChange={e => {
-                    setFilterDate(e.target.value)
-                    if (e.target.value !== 'custom') {
-                      setCustomDateFrom('')
-                      setCustomDateTo('')
-                    }
-                  }}
-                  style={{ minWidth: '140px' }}
-                >
-                  <option value="all">📅 Todas las fechas</option>
-                  <option value="today">Hoy</option>
-                  <option value="yesterday">Ayer</option>
-                  <option value="week">Última semana</option>
-                  <option value="month">Último mes</option>
-                  <option value="custom">Personalizado...</option>
-                </select>
+                  <ChevronDown size={20} style={{ transform: showTransactionFilters ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+                </button>
               </div>
 
+              {/* Search Bar - Collapsible */}
+              {showTransactionSearch && (
+                <div className="filter-bar">
+                  <div className="search-input" style={{ position: 'relative', flex: 1 }}>
+                    <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="Buscar transacciones..."
+                      value={searchTerm}
+                      onChange={e => setSearchTerm(e.target.value)}
+                      style={{ paddingLeft: '40px' }}
+                      autoFocus
+                    />
+                    {searchTerm && (
+                      <button 
+                        className="search-clear-btn"
+                        onClick={() => setSearchTerm('')}
+                        style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
+                      >
+                        <X size={16} />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Filters - Collapsible */}
+              {showTransactionFilters && (
+                <div className="filter-bar" style={{ flexWrap: 'wrap' }}>
+                  {/* Type Filter */}
+                  <select 
+                    className="form-select"
+                    value={filterType}
+                    onChange={e => setFilterType(e.target.value)}
+                    style={{ minWidth: '120px' }}
+                  >
+                    <option value="all">Todos</option>
+                    <option value="gasto">🔴 Gastos</option>
+                    <option value="ingreso">🟢 Ingresos</option>
+                  </select>
+
+                  {/* Category Filter */}
+                  <select 
+                    className="form-select"
+                    value={filterCategory}
+                    onChange={e => setFilterCategory(e.target.value)}
+                  >
+                    <option value="all">Todas las categorías</option>
+                    <optgroup label="Gastos">
+                      {categories.map(cat => (
+                        <option key={cat.id} value={cat.id}>{cat.emoji} {cat.name}</option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="Ingresos">
+                      {incomeCategories.map(cat => (
+                        <option key={cat.id} value={cat.id}>{cat.emoji} {cat.name}</option>
+                      ))}
+                    </optgroup>
+                  </select>
+
+                  {/* Date Filter */}
+                  <select 
+                    className="form-select"
+                    value={filterDate}
+                    onChange={e => {
+                      setFilterDate(e.target.value)
+                      if (e.target.value !== 'custom') {
+                        setCustomDateFrom('')
+                        setCustomDateTo('')
+                      }
+                    }}
+                    style={{ minWidth: '140px' }}
+                  >
+                    <option value="all">📅 Todas las fechas</option>
+                    <option value="today">Hoy</option>
+                    <option value="yesterday">Ayer</option>
+                    <option value="week">Última semana</option>
+                    <option value="month">Último mes</option>
+                    <option value="custom">Personalizado...</option>
+                  </select>
+
+                  {/* Clear Filters */}
+                  {(filterType !== 'all' || filterCategory !== 'all' || filterDate !== 'all') && (
+                    <button 
+                      className="btn btn-ghost btn-sm"
+                      onClick={() => {
+                        setFilterType('all')
+                        setFilterCategory('all')
+                        setFilterDate('all')
+                        setCustomDateFrom('')
+                        setCustomDateTo('')
+                      }}
+                    >
+                      Limpiar filtros
+                    </button>
+                  )}
+                </div>
+              )}
+
               {/* Custom Date Range */}
-              {filterDate === 'custom' && (
+              {showTransactionFilters && filterDate === 'custom' && (
                 <div className="filter-bar" style={{ paddingTop: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Desde:</span>

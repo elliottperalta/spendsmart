@@ -708,6 +708,45 @@ body {
   min-width: 150px;
 }
 
+/* Transaction Toggle Bar */
+.transaction-toggle-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.toggle-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-icon-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.toggle-icon-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+.transaction-count {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
 .search-input {
   position: relative;
 }
@@ -1784,7 +1823,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1rem;
+  padding: 1rem;
   position: relative;
 }
 
@@ -1900,35 +1939,40 @@ body {
   color: var(--text-primary);
 }
 
-/* Categories Area - Floating on right */
-/* Floating Category Menu */
+/* Menu Backdrop for closing on outside click */
+.mobile-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+}
+
+/* Floating Category Menu - like image 3 */
 .mobile-category-menu {
-  position: absolute;
+  position: fixed;
   right: 1rem;
-  top: 4rem;
-  background: var(--bg-secondary);
-  border-radius: 12px;
-  padding: 0.5rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border-color);
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
   z-index: 100;
-  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  max-height: 70vh;
   overflow-y: auto;
-  min-width: 160px;
 }
 
 .mobile-category-menu-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
   cursor: pointer;
   transition: all 0.15s;
-  width: 100%;
-  text-align: left;
+  white-space: nowrap;
 }
 
 .mobile-category-menu-item:hover {
@@ -1936,15 +1980,16 @@ body {
 }
 
 .mobile-category-menu-item.selected {
-  background: rgba(124, 58, 237, 0.15);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--text-secondary);
 }
 
 .mobile-category-menu-item .mobile-category-emoji {
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 .mobile-category-menu-item .mobile-category-name {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--text-primary);
   font-weight: 500;
 }

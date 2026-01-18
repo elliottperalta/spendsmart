@@ -203,37 +203,43 @@ const MobileExpenseInput = ({
         
         {/* Recurrence Dropdown Menu */}
         {showRecurrenceMenu && (
-          <div className="mobile-recurrence-menu">
-            {RECURRENCE_OPTIONS.map(option => (
-              <button
-                key={option.id}
-                className={`mobile-recurrence-option ${selectedRecurrence === option.id ? 'selected' : ''}`}
-                onClick={() => handleRecurrenceSelect(option.id)}
-              >
-                <span>{option.label}</span>
-                {selectedRecurrence === option.id && <Check size={16} />}
-              </button>
-            ))}
-          </div>
+          <>
+            <div className="mobile-menu-backdrop" onClick={() => setShowRecurrenceMenu(false)} />
+            <div className="mobile-recurrence-menu">
+              {RECURRENCE_OPTIONS.map(option => (
+                <button
+                  key={option.id}
+                  className={`mobile-recurrence-option ${selectedRecurrence === option.id ? 'selected' : ''}`}
+                  onClick={() => handleRecurrenceSelect(option.id)}
+                >
+                  <span>{option.label}</span>
+                  {selectedRecurrence === option.id && <Check size={16} />}
+                </button>
+              ))}
+            </div>
+          </>
         )}
 
         {/* Floating Category Menu */}
         {showCategoryMenu && (
-          <div className="mobile-category-menu">
-            {currentCategories.map(cat => (
-              <button
-                key={cat.id}
-                className={`mobile-category-menu-item ${selectedCategory === cat.id ? 'selected' : ''}`}
-                onClick={() => {
-                  setSelectedCategory(cat.id)
-                  setShowCategoryMenu(false)
-                }}
-              >
-                <span className="mobile-category-emoji">{cat.emoji}</span>
-                <span className="mobile-category-name">{cat.name}</span>
-              </button>
-            ))}
-          </div>
+          <>
+            <div className="mobile-menu-backdrop" onClick={() => setShowCategoryMenu(false)} />
+            <div className="mobile-category-menu">
+              {currentCategories.map(cat => (
+                <button
+                  key={cat.id}
+                  className={`mobile-category-menu-item ${selectedCategory === cat.id ? 'selected' : ''}`}
+                  onClick={() => {
+                    setSelectedCategory(cat.id)
+                    setShowCategoryMenu(false)
+                  }}
+                >
+                  <span className="mobile-category-emoji">{cat.emoji}</span>
+                  <span className="mobile-category-name">{cat.name}</span>
+                </button>
+              ))}
+            </div>
+          </>
         )}
 
         {/* Main Content Area */}
