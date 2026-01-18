@@ -1265,12 +1265,6 @@ function App() {
               {currentView === 'reports' && 'Genera y descarga reportes de tu actividad'}
             </p>
           </div>
-          <div className="header-actions desktop-only">
-            <button className="btn btn-secondary" onClick={exportToCSV}>
-              <Download size={18} />
-              <span className="btn-text">Exportar</span>
-            </button>
-          </div>
         </header>
 
         {/* Floating Action Button for Mobile */}
@@ -1372,7 +1366,14 @@ function App() {
                           </Pie>
                           <Tooltip 
                             formatter={(value) => `$${value.toFixed(2)}`}
-                            contentStyle={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '8px' }}
+                            contentStyle={{ 
+                              background: 'var(--bg-secondary)', 
+                              border: '1px solid var(--border-color)', 
+                              borderRadius: '8px',
+                              color: 'var(--text-primary)'
+                            }}
+                            itemStyle={{ color: 'var(--text-primary)' }}
+                            labelStyle={{ color: 'var(--text-primary)' }}
                           />
                         </PieChart>
                       </ResponsiveContainer>
@@ -2019,7 +2020,7 @@ function App() {
               )}
 
               {/* Report Generation Cards */}
-              <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginBottom: '1.5rem' }}>
+              <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', marginBottom: '1.5rem' }}>
                 <div className="card" style={{ padding: '1.5rem', textAlign: 'center' }}>
                   <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>📅</div>
                   <h3 style={{ marginBottom: '0.5rem' }}>Reporte Semanal</h3>
@@ -2065,6 +2066,22 @@ function App() {
                   >
                     <FileDown size={18} />
                     Descargar PDF
+                  </button>
+                </div>
+
+                <div className="card" style={{ padding: '1.5rem', textAlign: 'center' }}>
+                  <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>📁</div>
+                  <h3 style={{ marginBottom: '0.5rem' }}>Exportar CSV</h3>
+                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+                    Transacciones del mes en Excel
+                  </p>
+                  <button 
+                    className="btn btn-secondary" 
+                    style={{ width: '100%' }}
+                    onClick={exportToCSV}
+                  >
+                    <Download size={18} />
+                    Descargar CSV
                   </button>
                 </div>
               </div>
