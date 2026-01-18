@@ -15,6 +15,7 @@ import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import { supabase, isSupabaseConfigured } from './lib/supabase'
 import Auth from './Auth'
+import MobileExpenseInput from './MobileExpenseInput'
 
 // Categorías iniciales de GASTOS
 const DEFAULT_CATEGORIES = [
@@ -132,6 +133,7 @@ function App() {
   })
   
   const [showModal, setShowModal] = useState(false)
+  const [showMobileModal, setShowMobileModal] = useState(false)
   const [showCategoryModal, setShowCategoryModal] = useState(false)
   const [showIncomeCategories, setShowIncomeCategories] = useState(false)
   const [showBudgetModal, setShowBudgetModal] = useState(false)
@@ -485,7 +487,12 @@ function App() {
       date: expense.date,
       type: expense.type
     })
-    setShowModal(true)
+    // Use mobile modal on mobile devices
+    if (window.innerWidth <= 768) {
+      setShowMobileModal(true)
+    } else {
+      setShowModal(true)
+    }
   }
 
   const handleDelete = (id) => {
@@ -1269,7 +1276,14 @@ function App() {
         {/* Floating Action Button for Mobile */}
         <button 
           className="fab" 
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+            // Check if mobile
+            if (window.innerWidth <= 768) {
+              setShowMobileModal(true)
+            } else {
+              setShowModal(true)
+            }
+          }}
           title="Nueva transacción"
         >
           <Plus size={28} />
@@ -2773,6 +2787,56 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* Mobile Expense Input */}
+      <MobileExpenseInput
+        isOpen={showMobileModal}
+        onClose={() => {
+          setShowMobileModal(false)
+          setEditingExpense(null)
+        }}
+        onSubmit={(data, editId, recurrenceData) => {
+          if (editId) {
+            setExpenses(prev => prev.map(exp => 
+              exp.id === editId 
+                ? { ...exp, ...data }
+                : exp
+            ))
+            showToast(data.type === 'ingreso' ? 'Ingreso actualizado' : 'Gasto actualizado')
+          } else {
+            // Create the transaction
+            const newExpense = {
+              id: Date.now(),
+              ...data
+            }
+            setExpenses(prev => [newExpense, ...prev])
+            
+            // If recurrence is set, also create a recurring transaction
+            if (recurrenceData) {
+              const dateObj = new Date(data.date + 'T12:00:00')
+              const newRecurring = {
+                id: Date.now() + 1,
+                description: data.description,
+                amount: data.amount,
+                categoryId: data.categoryId,
+                type: data.type,
+                dayOfMonth: dateObj.getDate(),
+                interval: recurrenceData.interval,
+                unit: recurrenceData.unit,
+                active: true,
+                lastProcessed: format(new Date(), 'yyyy-MM')
+              }
+              setRecurring(prev => [...prev, newRecurring])
+              showToast(`${data.type === 'ingreso' ? 'Ingreso' : 'Gasto'} recurrente creado`)
+            } else {
+              showToast(data.type === 'ingreso' ? 'Ingreso registrado' : 'Gasto registrado')
+            }
+          }
+        }}
+        categories={categories}
+        incomeCategories={incomeCategories}
+        editingExpense={editingExpense}
+      />
     </div>
   )
 }

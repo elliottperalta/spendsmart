@@ -1674,3 +1674,750 @@ body {
     padding: 1.5rem;
   }
 }
+
+/* ==================== MOBILE EXPENSE INPUT ==================== */
+.mobile-expense-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-expense-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Header */
+.mobile-expense-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.mobile-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-close-btn:hover {
+  background: var(--bg-tertiary);
+}
+
+.mobile-type-toggle {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--bg-tertiary);
+  padding: 0.25rem;
+  border-radius: 12px;
+}
+
+.mobile-type-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.mobile-type-btn.active {
+  color: white;
+}
+
+.mobile-type-btn.active.expense {
+  background: #ef4444;
+}
+
+.mobile-type-btn.active.income {
+  background: #22c55e;
+}
+
+.mobile-edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  background: var(--bg-tertiary);
+  border: none;
+  border-radius: 20px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mobile-edit-btn:hover {
+  background: var(--border-color);
+}
+
+/* Main Area - Amount and Categories side by side */
+.mobile-main-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  min-height: 180px;
+  position: relative;
+}
+
+.mobile-amount-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Amount Section */
+.mobile-amount-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  min-height: 120px;
+  position: relative;
+}
+
+.mobile-amount-display {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.mobile-currency {
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+}
+
+.mobile-amount-value {
+  font-size: 4rem;
+  font-weight: 200;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.mobile-amount-display.income .mobile-amount-value {
+  color: #22c55e;
+}
+
+.mobile-note-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.mobile-note-input svg {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.mobile-note-input input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  outline: none;
+}
+
+.mobile-note-input input::placeholder {
+  color: var(--text-secondary);
+}
+
+.mobile-add-note-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.625rem 1rem;
+  background: transparent;
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mobile-add-note-btn:hover {
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+/* Categories Area - Floating on right */
+.mobile-categories-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Floating Categories - Legacy */
+.mobile-categories-floating {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.mobile-categories-quick {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.mobile-category-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: var(--bg-tertiary);
+  border: 2px solid transparent;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.mobile-category-pill:hover {
+  background: var(--border-color);
+}
+
+.mobile-category-pill.selected {
+  border-color: var(--primary);
+  background: rgba(124, 58, 237, 0.1);
+}
+
+.mobile-category-emoji {
+  font-size: 1.125rem;
+}
+
+.mobile-category-name {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Categories Expanded */
+.mobile-categories-expanded {
+  position: fixed;
+  left: 1rem;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  z-index: 100;
+}
+
+.mobile-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.mobile-category-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  background: var(--bg-tertiary);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.mobile-category-chip:hover {
+  background: var(--border-color);
+}
+
+.mobile-category-chip.selected {
+  border-color: var(--primary);
+  background: rgba(124, 58, 237, 0.15);
+}
+
+.mobile-category-chip .mobile-category-emoji {
+  font-size: 1.5rem;
+}
+
+.mobile-category-chip .mobile-category-name {
+  font-size: 0.9375rem;
+}
+
+/* Meta Row */
+.mobile-meta-row {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.mobile-meta-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-tertiary);
+  border: none;
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+}
+
+.mobile-meta-btn:hover {
+  background: var(--border-color);
+}
+
+.mobile-meta-btn svg {
+  color: var(--text-secondary);
+}
+
+.mobile-meta-time {
+  margin-left: auto;
+  color: var(--text-secondary);
+}
+
+.mobile-meta-btn.category-btn {
+  flex: 0 0 auto;
+}
+
+.mobile-selected-category {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.mobile-category-pill.more {
+  background: transparent;
+  border: 1px dashed var(--border-color);
+}
+
+.mobile-category-pill.more:hover {
+  border-color: var(--text-secondary);
+}
+
+/* Date Picker */
+.mobile-date-picker {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.mobile-date-input,
+.mobile-time-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+}
+
+.mobile-date-input:focus,
+.mobile-time-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* Numpad */
+.mobile-numpad {
+  padding: 0.5rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.mobile-numpad-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-numpad-row:last-child {
+  margin-bottom: 0;
+}
+
+.mobile-numpad-btn {
+  flex: 1;
+  aspect-ratio: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border: none;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 56px;
+}
+
+.mobile-numpad-btn:hover {
+  background: var(--border-color);
+}
+
+.mobile-numpad-btn:active {
+  transform: scale(0.95);
+  background: var(--border-color);
+}
+
+.mobile-numpad-btn.submit {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.mobile-numpad-btn.submit.active {
+  background: var(--primary);
+  color: white;
+}
+
+.mobile-numpad-btn.submit.active:hover {
+  background: var(--primary-dark);
+}
+
+.mobile-numpad-btn.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mobile-numpad-btn.backspace {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.mobile-numpad-btn.backspace:disabled {
+  opacity: 0.3;
+}
+
+/* Recurrence Button */
+.mobile-recurrence-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.mobile-recurrence-btn:hover {
+  background: var(--border-color);
+}
+
+.mobile-recurrence-btn.active {
+  background: #10b981;
+  color: white;
+}
+
+/* Recurrence Menu */
+.mobile-recurrence-menu {
+  position: absolute;
+  top: 60px;
+  right: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  z-index: 100;
+  min-width: 160px;
+}
+
+.mobile-recurrence-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+}
+
+.mobile-recurrence-option:hover {
+  background: var(--bg-tertiary);
+}
+
+.mobile-recurrence-option.selected {
+  color: var(--text-primary);
+}
+
+.mobile-recurrence-option.selected svg {
+  color: #10b981;
+}
+
+/* Recurrence Indicator */
+.mobile-recurrence-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  background: rgba(16, 185, 129, 0.15);
+  border-radius: 20px;
+  color: #10b981;
+  font-size: 0.8125rem;
+}
+
+/* Custom Recurrence Modal */
+.mobile-custom-recurrence {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  border-radius: 20px 20px 0 0;
+  z-index: 200;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.mobile-custom-recurrence-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mobile-custom-recurrence-header span {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.mobile-confirm-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #10b981;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-custom-recurrence-content {
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.mobile-custom-label {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.mobile-custom-inputs {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mobile-custom-number,
+.mobile-custom-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobile-custom-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.mobile-custom-arrow:hover {
+  background: var(--border-color);
+  color: var(--text-primary);
+}
+
+.mobile-custom-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 80px;
+  text-align: center;
+}
+
+.mobile-custom-number .mobile-custom-value {
+  min-width: 50px;
+}
+
+/* Only show on desktop for testing */
+@media (min-width: 769px) {
+  .mobile-expense-overlay {
+    background: rgba(0, 0, 0, 0.85);
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mobile-expense-container {
+    max-width: 420px;
+    max-height: 90vh;
+    background: var(--bg-primary);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .mobile-main-area {
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+    min-height: auto;
+  }
+  
+  .mobile-amount-area {
+    margin-bottom: 0.75rem;
+  }
+  
+  .mobile-amount-value {
+    font-size: 3.5rem;
+  }
+  
+  .mobile-categories-area {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .mobile-categories-floating {
+    position: static;
+    transform: none;
+    padding: 0 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .mobile-categories-quick {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .mobile-category-pill {
+    padding: 0.5rem 0.875rem;
+  }
+  
+  .mobile-category-name {
+    font-size: 0.8125rem;
+  }
+  
+  .mobile-numpad-btn {
+    min-height: 52px;
+    font-size: 1.375rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .mobile-amount-value {
+    font-size: 3rem;
+  }
+  
+  .mobile-numpad-btn {
+    min-height: 48px;
+    font-size: 1.25rem;
+    border-radius: 10px;
+  }
+  
+  .mobile-category-pill {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Safe area for modern phones */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .mobile-numpad {
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+  }
+}
