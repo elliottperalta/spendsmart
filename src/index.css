@@ -1683,16 +1683,26 @@ body {
   z-index: 2000;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .mobile-expense-container {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-height: 100vh;
-  max-height: 100dvh;
+  height: 100dvh;
   overflow: hidden;
   position: relative;
+}
+
+/* Scrollable content area between header and numpad */
+.mobile-scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Header */
@@ -1772,12 +1782,12 @@ body {
 
 /* Main Area - Amount and Categories side by side */
 .mobile-main-area {
-  flex: 1;
   display: flex;
   align-items: center;
   padding: 1rem;
-  min-height: 180px;
+  min-height: 150px;
   position: relative;
+  flex-shrink: 0;
 }
 
 .mobile-amount-area {
@@ -2097,6 +2107,7 @@ body {
   padding: 0.5rem;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
 }
 
 .mobile-numpad-row {
@@ -2111,7 +2122,6 @@ body {
 
 .mobile-numpad-btn {
   flex: 1;
-  aspect-ratio: 1.5;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2123,7 +2133,8 @@ body {
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.15s;
-  min-height: 56px;
+  min-height: 52px;
+  padding: 0.75rem;
 }
 
 .mobile-numpad-btn:hover {

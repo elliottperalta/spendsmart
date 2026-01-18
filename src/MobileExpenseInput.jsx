@@ -198,7 +198,8 @@ const MobileExpenseInput = ({
           </button>
         </div>
 
-        {/* Recurrence Dropdown Menu */}
+        {/* Scrollable Content Area */}
+        <div className="mobile-scrollable-content">        {/* Recurrence Dropdown Menu */}
         {showRecurrenceMenu && (
           <div className="mobile-recurrence-menu">
             {RECURRENCE_OPTIONS.map(option => (
@@ -266,7 +267,10 @@ const MobileExpenseInput = ({
               <button
                 key={cat.id}
                 className={`mobile-category-pill ${selectedCategory === cat.id ? 'selected' : ''}`}
-                onClick={() => setSelectedCategory(cat.id)}
+                onClick={() => {
+                  setSelectedCategory(cat.id)
+                  setShowAllCategories(false) // Auto-minimize when selecting
+                }}
               >
                 <span className="mobile-category-emoji">{cat.emoji}</span>
                 <span className="mobile-category-name">{cat.name}</span>
@@ -279,6 +283,15 @@ const MobileExpenseInput = ({
               >
                 <ChevronDown size={16} />
                 <span>Más</span>
+              </button>
+            )}
+            {showAllCategories && (
+              <button 
+                className="mobile-category-pill more"
+                onClick={() => setShowAllCategories(false)}
+              >
+                <ChevronUp size={16} />
+                <span>Menos</span>
               </button>
             )}
           </div>
@@ -392,6 +405,7 @@ const MobileExpenseInput = ({
             </div>
           </div>
         )}
+        </div>{/* End of mobile-scrollable-content */}
 
         {/* Custom Numpad */}
         <div className="mobile-numpad">

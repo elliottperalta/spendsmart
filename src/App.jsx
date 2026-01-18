@@ -755,9 +755,7 @@ function App() {
     if (processedCount > 0) {
       setRecurring(updatedRecurring)
       setExpenses(prev => [...newTransactions, ...prev])
-      setTimeout(() => {
-        showToast(`${processedCount} transacción(es) recurrente(s) procesada(s)`)
-      }, 500)
+      // Silently process recurring transactions without notification
     }
   }
 
