@@ -1829,12 +1829,17 @@ body {
   background: var(--border-color);
 }
 
-/* Main Area - Amount display */
+/* Main Area - Amount display centered in available space */
 .mobile-main-area {
+  position: fixed;
+  top: 60px; /* Below header */
+  bottom: 310px; /* Above meta row + numpad */
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem;
+  padding: 1rem;
 }
 
 .mobile-amount-area {
