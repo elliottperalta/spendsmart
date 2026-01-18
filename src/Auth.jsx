@@ -155,25 +155,12 @@ export default function Auth({ onLogin }) {
               </>
             ) : (
               <>
-                {isLogin ? <LogIn size={18} /> : <UserPlus size={18} />}
-                {isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
+                <LogIn size={18} />
+                Iniciar Sesión
               </>
             )}
           </button>
         </form>
-
-        <div className="auth-footer">
-          <p>
-            {isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
-            <button 
-              type="button"
-              className="auth-link"
-              onClick={() => setIsLogin(!isLogin)}
-            >
-              {isLogin ? 'Regístrate' : 'Inicia sesión'}
-            </button>
-          </p>
-        </div>
       </div>
     </div>
   )
