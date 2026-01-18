@@ -198,6 +198,22 @@ const MobileExpenseInput = ({
           </button>
         </div>
 
+        {/* Date and Time Inputs - Direct Edit */}
+        <div className="mobile-datetime-row">
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="mobile-datetime-input"
+          />
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            className="mobile-datetime-input"
+          />
+        </div>
+
         {/* Scrollable Content Area */}
         <div className="mobile-scrollable-content">
         
