@@ -1729,25 +1729,20 @@ body {
   overflow: hidden;
 }
 
-/* Content area */
-.mobile-scrollable-content {
-  /* No flex, just normal block flow */
-}
-
-/* Numpad fixed at bottom - takes more space */
+/* Numpad fixed at bottom */
 .mobile-numpad {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  top: 45%; /* Starts from middle of screen */
-  padding: 0.75rem;
+  padding: 0.5rem;
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0));
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
   z-index: 10;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 /* Category menu floats above everything */
@@ -2079,12 +2074,17 @@ body {
 }
 
 /* Meta Row */
+/* Meta row - Fixed above numpad */
 .mobile-meta-row {
+  position: fixed;
+  bottom: 260px; /* Height of numpad */
+  left: 0;
+  right: 0;
   display: flex;
   gap: 0.75rem;
-  padding: 0 1rem;
-  margin-bottom: 0.75rem;
-  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--bg-primary);
+  z-index: 11;
 }
 
 .mobile-meta-btn {
@@ -2143,11 +2143,10 @@ body {
   border-color: var(--primary);
 }
 
-/* Numpad - styles only, positioning is above */
+/* Numpad buttons */
 .mobile-numpad-row {
   display: flex;
   gap: 0.5rem;
-  flex: 1;
 }
 
 .mobile-numpad-btn {
@@ -2158,15 +2157,20 @@ body {
   background: var(--bg-tertiary);
   border: none;
   border-radius: 12px;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 500;
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.15s;
+  height: 56px;
 }
 
 .mobile-numpad-btn:hover {
   background: var(--border-color);
+}
+
+.mobile-numpad-btn:active {
+  transform: scale(0.95);
 }
 
 .mobile-numpad-btn:active {
