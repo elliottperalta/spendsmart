@@ -1693,6 +1693,7 @@ body {
   height: 100dvh;
   overflow: hidden;
   position: relative;
+  justify-content: space-between;
 }
 
 /* Scrollable content area between header and numpad */
@@ -1703,6 +1704,7 @@ body {
   display: flex;
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
+  max-height: calc(100dvh - 280px); /* Leave space for header and numpad */
 }
 
 /* Header */
