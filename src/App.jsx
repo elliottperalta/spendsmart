@@ -157,6 +157,22 @@ function App() {
   const [showTransactionSearch, setShowTransactionSearch] = useState(false)
   const [showTransactionFilters, setShowTransactionFilters] = useState(false)
   
+  // Recurrence states for desktop modal
+  const [desktopRecurrence, setDesktopRecurrence] = useState('none')
+  const [desktopCustomInterval, setDesktopCustomInterval] = useState(1)
+  const [desktopCustomUnit, setDesktopCustomUnit] = useState('month')
+  
+  // Opciones de recurrencia
+  const RECURRENCE_OPTIONS = [
+    { id: 'none', label: 'Sin recurrencia' },
+    { id: 'daily', label: 'Diario', interval: 1, unit: 'day' },
+    { id: 'weekly', label: 'Semanal', interval: 1, unit: 'week' },
+    { id: '2weeks', label: 'Quincenal', interval: 2, unit: 'week' },
+    { id: 'monthly', label: 'Mensual', interval: 1, unit: 'month' },
+    { id: 'yearly', label: 'Anual', interval: 1, unit: 'year' },
+    { id: 'custom', label: 'Personalizado' },
+  ]
+  
   // Form states
   const [formData, setFormData] = useState({
     description: '',
@@ -364,6 +380,33 @@ function App() {
     setTimeout(() => setToast(null), 3000)
   }
 
+  // Helper para formatear la recurrencia
+  const formatRecurrenceLabel = (rec) => {
+    // Si tiene interval y unit, usar el nuevo formato
+    if (rec.interval && rec.unit) {
+      const unitLabels = {
+        day: { singular: 'día', plural: 'días' },
+        week: { singular: 'semana', plural: 'semanas' },
+        month: { singular: 'mes', plural: 'meses' },
+        year: { singular: 'año', plural: 'años' }
+      }
+      const unitLabel = unitLabels[rec.unit]
+      
+      // Casos especiales comunes
+      if (rec.interval === 1 && rec.unit === 'day') return 'Diario'
+      if (rec.interval === 1 && rec.unit === 'week') return 'Semanal'
+      if (rec.interval === 1 && rec.unit === 'month') return `Día ${rec.dayOfMonth} de cada mes`
+      if (rec.interval === 1 && rec.unit === 'year') return 'Anual'
+      if (rec.interval === 2 && rec.unit === 'week') return 'Quincenal'
+      
+      // Formato genérico
+      return `Cada ${rec.interval} ${rec.interval === 1 ? unitLabel.singular : unitLabel.plural}`
+    }
+    
+    // Fallback para recurrentes antiguos (solo dayOfMonth)
+    return `Día ${rec.dayOfMonth} de cada mes`
+  }
+
   // Filtrar gastos del mes seleccionado
   const monthExpenses = expenses.filter(exp => {
     const expDate = new Date(exp.date)
@@ -515,7 +558,46 @@ function App() {
         categoryId: Number(formData.categoryId)
       }
       setExpenses(prev => [newExpense, ...prev])
-      showToast(formData.type === 'ingreso' ? 'Ingreso registrado' : 'Gasto registrado')
+      
+      // Si hay recurrencia seleccionada, crear también la transacción recurrente
+      if (desktopRecurrence !== 'none') {
+        const dateObj = new Date(formData.date + 'T12:00:00')
+        let recurrenceData = null
+        
+        if (desktopRecurrence === 'custom') {
+          recurrenceData = {
+            interval: desktopCustomInterval,
+            unit: desktopCustomUnit
+          }
+        } else {
+          const option = RECURRENCE_OPTIONS.find(o => o.id === desktopRecurrence)
+          if (option) {
+            recurrenceData = {
+              interval: option.interval,
+              unit: option.unit
+            }
+          }
+        }
+        
+        if (recurrenceData) {
+          const newRecurring = {
+            id: Date.now() + 1,
+            description: formData.description,
+            amount: parseFloat(formData.amount),
+            categoryId: Number(formData.categoryId),
+            type: formData.type,
+            dayOfMonth: dateObj.getDate(),
+            interval: recurrenceData.interval,
+            unit: recurrenceData.unit,
+            active: true,
+            lastProcessed: format(new Date(), 'yyyy-MM')
+          }
+          setRecurring(prev => [...prev, newRecurring])
+          showToast(`${formData.type === 'ingreso' ? 'Ingreso' : 'Gasto'} recurrente creado`)
+        }
+      } else {
+        showToast(formData.type === 'ingreso' ? 'Ingreso registrado' : 'Gasto registrado')
+      }
     }
     
     closeModal()
@@ -555,6 +637,10 @@ function App() {
       date: format(new Date(), 'yyyy-MM-dd'),
       type: 'gasto'
     })
+    // Reset recurrence states
+    setDesktopRecurrence('none')
+    setDesktopCustomInterval(1)
+    setDesktopCustomUnit('month')
   }
 
   const handleAddCategory = () => {
@@ -1934,7 +2020,7 @@ function App() {
                               )}
                             </div>
                             <div className="transaction-meta">
-                              Día {rec.dayOfMonth} de cada mes • {category?.name}
+                              {formatRecurrenceLabel(rec)} • {category?.name}
                               <span style={{ 
                                 marginLeft: '0.5rem', 
                                 padding: '2px 6px', 
@@ -2440,6 +2526,79 @@ function App() {
                     ))}
                   </div>
                 </div>
+
+                {/* Recurrence selector - only for new transactions */}
+                {!editingExpense && (
+                  <div className="form-group">
+                    <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <Repeat size={16} />
+                      Recurrencia
+                    </label>
+                    <select
+                      className="form-input"
+                      value={desktopRecurrence}
+                      onChange={e => setDesktopRecurrence(e.target.value)}
+                    >
+                      {RECURRENCE_OPTIONS.map(opt => (
+                        <option key={opt.id} value={opt.id}>{opt.label}</option>
+                      ))}
+                    </select>
+                    
+                    {/* Custom interval options */}
+                    {desktopRecurrence === 'custom' && (
+                      <div style={{ 
+                        display: 'flex', 
+                        gap: '0.5rem', 
+                        marginTop: '0.75rem',
+                        padding: '0.75rem',
+                        background: 'var(--bg-tertiary)',
+                        borderRadius: '8px'
+                      }}>
+                        <div style={{ flex: 1 }}>
+                          <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.25rem', display: 'block' }}>
+                            Cada
+                          </label>
+                          <input
+                            type="number"
+                            min="1"
+                            max="99"
+                            className="form-input"
+                            value={desktopCustomInterval}
+                            onChange={e => setDesktopCustomInterval(Math.max(1, Math.min(99, parseInt(e.target.value) || 1)))}
+                          />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.25rem', display: 'block' }}>
+                            Unidad
+                          </label>
+                          <select
+                            className="form-input"
+                            value={desktopCustomUnit}
+                            onChange={e => setDesktopCustomUnit(e.target.value)}
+                          >
+                            <option value="day">Días</option>
+                            <option value="week">Semanas</option>
+                            <option value="month">Meses</option>
+                            <option value="year">Años</option>
+                          </select>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {desktopRecurrence !== 'none' && (
+                      <p style={{ 
+                        fontSize: '0.75rem', 
+                        color: 'var(--text-secondary)', 
+                        marginTop: '0.5rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.25rem'
+                      }}>
+                        💡 Se creará también como transacción recurrente
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
               
               <div className="modal-footer">
